@@ -1,3 +1,5 @@
+using Marten;
+
 namespace Catalog_Api
 {
     public class Program
@@ -9,6 +11,15 @@ namespace Catalog_Api
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddMediatR(c =>
+            {
+                c.RegisterServicesFromAssemblies(typeof(Program).Assembly);
+            });
+
+            builder.Services.AddMarten(opts =>
+            {
+                opts.Connection(builder.Configuration.GetConnectionString("Catalog_Db")!);
+            }).UseLightweightSessions();
 
             var app = builder.Build();
 

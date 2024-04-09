@@ -1,0 +1,14 @@
+@HOST = http://localhost:5161
+
+
+POST {{HOST}}/api/product
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Name": "New Product",
+  "Category": ["Electronics", "Computers"],
+  "Description": "A brand new computer",
+  "ImageFile": "computer.jpg",
+  "Price": 1200.00
+}
