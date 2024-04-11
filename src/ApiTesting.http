@@ -6,9 +6,20 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "Name": "New Product",
+  "Name": "New Product 5",
   "Category": ["Electronics", "Computers"],
   "Description": "A brand new computer",
   "ImageFile": "computer.jpg",
   "Price": 1200.00
 }
+
+###
+
+GET {{HOST}}/api/product
+Accept: application/json
+Content-Type: application/json
+
+###
+GET {{HOST}}/api/product/018ecc95-039f-4ea7-8f7e-7dec52c468c3
+Accept: application/json
+Content-Type: application/json
