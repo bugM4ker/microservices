@@ -6,7 +6,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "Name": "New Product 6",
+  "Name": "",
   "Category": ["Electronics", "Computers"],
   "Description": "A brand new computer",
   "ImageFile": "computer.jpg",

@@ -9,7 +9,7 @@ namespace Catalog_Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddValidators();
             builder.Services.AddControllers();
             builder.Services.AddMediatR(c =>
             {
@@ -29,6 +29,7 @@ namespace Catalog_Api
 
             app.UseAuthorization();
 
+            app.UseMiddleware<ValidationMiddleware>();
 
             app.MapControllers();
 

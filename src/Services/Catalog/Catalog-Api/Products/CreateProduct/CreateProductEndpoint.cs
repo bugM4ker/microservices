@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using Catalog_Api.Attributes;
+using Catalog_Api.Products.ProductFromValidator;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog_Api.Products.CreateProduct
@@ -16,6 +19,7 @@ namespace Catalog_Api.Products.CreateProduct
         }
 
         [HttpPost]
+        [ValidateWith(typeof(IValidator<ProductForm>))]
         public async Task<IActionResult> CreateProductAsync([FromBody] ProductForm productForm)
         {
             var command = new CreateProductCommand { ProductForm = productForm };
