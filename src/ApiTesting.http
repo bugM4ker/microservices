@@ -1,0 +1,30 @@
+@HOST = https://localhost:6060
+
+
+POST {{HOST}}/api/product
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Name": "Product A",
+  "Category": ["Electronics", "Computers"],
+  "Description": "A brand new computer",
+  "ImageFile": "computer.jpg",
+  "Price": 1200.00
+}
+
+###
+
+GET {{HOST}}/api/product
+Accept: application/json
+Content-Type: application/json
+
+###
+GET {{HOST}}/api/product/018eeb36-7ada-4029-beb8-73bff7b53861
+Accept: application/json
+Content-Type: application/json
+
+###
+DELETE {{HOST}}/api/product/018eeb36-7ada-4029-beb8-73bff7b53861
+Accept: application/json
+Content-Type: application/json

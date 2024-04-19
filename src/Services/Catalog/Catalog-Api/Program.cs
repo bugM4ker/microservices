@@ -1,3 +1,7 @@
+using Catalog_Api.ExtensionsMethod.Logging;
+using Catalog_Api.Middlewares;
+using Marten;
+
 namespace Catalog_Api
 {
     public class Program
@@ -7,8 +11,18 @@ namespace Catalog_Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddLoggingServices();
+            builder.Services.AddValidators();
             builder.Services.AddControllers();
+            builder.Services.AddMediatR(c =>
+            {
+                c.RegisterServicesFromAssemblies(typeof(Program).Assembly);
+            });
+
+            builder.Services.AddMarten(opts =>
+            {
+                opts.Connection(builder.Configuration.GetConnectionString("Catalog_Db")!);
+            }).UseLightweightSessions();
 
             var app = builder.Build();
 
@@ -16,8 +30,11 @@ namespace Catalog_Api
 
             app.UseHttpsRedirection();
 
+            app.UseMiddleware<LoggingMiddleware>();
+
             app.UseAuthorization();
 
+            app.UseMiddleware<ValidationMiddleware>();
 
             app.MapControllers();
 
