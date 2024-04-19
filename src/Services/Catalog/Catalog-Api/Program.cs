@@ -1,3 +1,5 @@
+using Catalog_Api.ExtensionsMethod.Logging;
+using Catalog_Api.Middlewares;
 using Marten;
 
 namespace Catalog_Api
@@ -9,6 +11,7 @@ namespace Catalog_Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddLoggingServices();
             builder.Services.AddValidators();
             builder.Services.AddControllers();
             builder.Services.AddMediatR(c =>
@@ -26,6 +29,8 @@ namespace Catalog_Api
             // Configure the HTTP request pipeline.
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<LoggingMiddleware>();
 
             app.UseAuthorization();
 
