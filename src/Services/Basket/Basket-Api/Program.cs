@@ -9,7 +9,10 @@ namespace Basket_Api
             // Add services to the container.
 
             builder.Services.AddControllers();
-
+            builder.Services.AddMediatR(c =>
+            {
+                c.RegisterServicesFromAssemblies(typeof(Program).Assembly);
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
