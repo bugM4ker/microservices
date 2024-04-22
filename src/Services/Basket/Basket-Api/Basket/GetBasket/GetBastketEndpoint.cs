@@ -17,9 +17,16 @@ namespace Basket_Api.Basket.GetBasket
         [HttpGet]
         public async Task<IActionResult> GetBasket(string userName)
         {
-            var query = new GetBasketQuery(userName);
-            var res = await _mediator.Send(query);
-            return Ok(res);
+            try
+            {
+                var query = new GetBasketQuery(userName);
+                var res = await _mediator.Send(query);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
     }

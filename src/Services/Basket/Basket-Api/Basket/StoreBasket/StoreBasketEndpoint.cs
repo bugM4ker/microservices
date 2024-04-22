@@ -27,12 +27,6 @@ namespace Basket_Api.Basket.StoreBasket
             {
                 var command = new StoreBasketCommand(shoppingCart);
                 var result = await _mediator.Send(command);
-
-                if (!result.isStored)
-                {
-                    return BadRequest("Could not store the shopping cart.");
-                }
-
                 return Ok("Shopping cart stored successfully.");
             }
             catch (Exception ex)
