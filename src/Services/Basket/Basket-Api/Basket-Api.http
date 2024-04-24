@@ -1,0 +1,31 @@
+@Basket_Api_HostAddress = http://localhost:6001
+
+GET {{Basket_Api_HostAddress}}/api/basket
+Accept: application/json
+Content-Type: application/json
+
+###
+
+POST {{Basket_Api_HostAddress}}/api/basket
+Content-Type: application/json
+Accept: application/json
+
+{
+  "UserName": "testUser4",
+  "Items": [
+    {
+      "ProductId": "d1d8be66-4431-4c78-a3cd-62c7a0435f82",
+      "ProductName": "iPhone 13",
+      "Color": "Black",
+      "Price": 999.99,
+      "Quantity": 2
+    },
+    {
+      "ProductId": "4c51b94f-9de4-4cda-aa9a-a70bf0f1efad",
+      "ProductName": "Samsung Galaxy S21",
+      "Color": "Blue",
+      "Price": 799.99,
+      "Quantity": 1
+    }
+  ]
+}
