@@ -1,6 +1,7 @@
 ﻿using Basket_Api.Middleware;
 using Basket_Api.Models;
 using Basket_Api.Repository;
+using Discount_gRPC.Protos;
 using Marten;
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -19,6 +20,11 @@ namespace Basket_Api
             builder.Services.AddMediatR(c =>
             {
                 c.RegisterServicesFromAssemblies(typeof(Program).Assembly);
+            });
+
+            builder.Services.AddGrpcClient<DisCountProtoService.DisCountProtoServiceClient>(options =>
+            {
+                options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
             });
 
             builder.Services.AddMarten(opts =>
