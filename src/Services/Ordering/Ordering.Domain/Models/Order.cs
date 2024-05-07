@@ -42,7 +42,7 @@ namespace Ordering.Domain.Models
 
         public void Update(OrderName orderName, Address shippingAdress, Address billingAdress, Payment payment, OrderStatus orderStatus)
         {
-            orderName = orderName;
+            OrderName = orderName;
             ShippingAdress = shippingAdress;
             BillingAddress = billingAdress;
             Payment = payment;
