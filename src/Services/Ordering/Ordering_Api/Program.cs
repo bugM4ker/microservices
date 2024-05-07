@@ -1,3 +1,5 @@
+using Ordering.Infrastructure;
+
 namespace Ordering_Api
 {
     public class Program
@@ -7,6 +9,8 @@ namespace Ordering_Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddInfrastructureServices(builder.Configuration);
 
             builder.Services.AddControllers();
 
