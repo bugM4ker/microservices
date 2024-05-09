@@ -9,10 +9,10 @@ namespace Ordering.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
 
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Order> orders { get; set; }
-        public DbSet<OrderItems> OrderItems { get; set; }
+        public DbSet<Customer> Customers => Set<Customer>();
+        public DbSet<Product> Products => Set<Product>();
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<OrderItems> OrderItems => Set<OrderItems>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

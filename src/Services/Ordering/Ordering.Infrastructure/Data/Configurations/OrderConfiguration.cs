@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ordering.Domain.Enum;
 using Ordering.Domain.Models;
 using Ordering.Domain.ValueObject;
+using Ordering.Domain.Enum;
 
 namespace Ordering.Infrastructure.Data.Configurations
 {
@@ -11,116 +11,71 @@ namespace Ordering.Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.HasKey(o => o.Id);
-            builder.Property(o => o.Id).HasConversion(
-                orderId => orderId.Value,
-                dbId => OrderId.Of(dbId));
-            builder.HasOne<Customer>()
-                .WithMany()
-                .HasForeignKey(o => o.CustomerId)
-                .IsRequired();
 
-            builder.HasMany(o => o.OrderItems)
-                .WithOne()
-                .HasForeignKey(oi => oi.OrderId);
+            builder.Property(o => o.Id)
+                   .HasConversion(
+                       orderId => orderId.Value,
+                       dbId => OrderId.Of(dbId));
 
-            builder.ComplexProperty(
-                o => o.CustomerId, nameBuilder =>
-                {
-                    nameBuilder.Property(n => n.Value)
-                    .HasColumnName(nameof(Order.OrderName))
-                    .HasMaxLength(100)
-                    .IsRequired();
-                });
-            builder.ComplexProperty(
-                o => o.ShippingAdress, addressBuilder =>
-                {
-                    addressBuilder.Property(a => a.FirstName)
-                    .HasMaxLength(50)
-                    .IsRequired();
+            builder.Property(o => o.CustomerId)
+                   .HasConversion(
+                       customerId => customerId.Value,
+                       value => CustomerId.Of(value));
 
-                    addressBuilder.Property(a => a.LastName)
-                    .HasMaxLength(50)
-                    .IsRequired();
+            builder.HasOne<Customer>()  // Assumes a Customer entity exists and properly configured elsewhere
+                   .WithMany()
+                   .HasForeignKey("CustomerId")
+                   .IsRequired();
 
-                    addressBuilder.Property(a => a.EmailAddress)
-                    .HasMaxLength(50)
-                    .IsRequired();
+            builder.OwnsOne(o => o.OrderName, on =>
+            {
+                on.Property(n => n.Value)
+                  .HasColumnName("OrderName")
+                  .HasMaxLength(100)
+                  .IsRequired();
+            });
 
-                    addressBuilder.Property(a => a.AddressLine)
-                    .HasMaxLength(50)
-                    .IsRequired();
+            builder.OwnsOne(o => o.ShippingAdress, sa =>
+            {
+                sa.Property(a => a.FirstName).HasMaxLength(50).IsRequired();
+                sa.Property(a => a.LastName).HasMaxLength(50).IsRequired();
+                sa.Property(a => a.EmailAddress).HasMaxLength(100).IsRequired();
+                sa.Property(a => a.AddressLine).HasMaxLength(200).IsRequired();
+                sa.Property(a => a.Country).HasMaxLength(50).IsRequired();
+                sa.Property(a => a.State).HasMaxLength(50).IsRequired();
+                sa.Property(a => a.ZipCode).HasMaxLength(20).IsRequired();
+            });
 
-                    addressBuilder.Property(a => a.Country)
-                    .HasMaxLength(50)
-                    .IsRequired();
+            builder.OwnsOne(o => o.BillingAddress, ba =>
+            {
+                ba.Property(a => a.FirstName).HasMaxLength(50).IsRequired();
+                ba.Property(a => a.LastName).HasMaxLength(50).IsRequired();
+                ba.Property(a => a.EmailAddress).HasMaxLength(100).IsRequired();
+                ba.Property(a => a.AddressLine).HasMaxLength(200).IsRequired();
+                ba.Property(a => a.Country).HasMaxLength(50).IsRequired();
+                ba.Property(a => a.State).HasMaxLength(50).IsRequired();
+                ba.Property(a => a.ZipCode).HasMaxLength(20).IsRequired();
+            });
 
-                    addressBuilder.Property(a => a.State)
-                    .HasMaxLength(50)
-                    .IsRequired();
-
-                    addressBuilder.Property(a => a.ZipCode)
-                    .HasMaxLength(50)
-                    .IsRequired();
-                });
-
-            builder.ComplexProperty(
-                o => o.BillingAddress, addressBuilder =>
-                {
-                    addressBuilder.Property(a => a.FirstName)
-                    .HasMaxLength(50)
-                    .IsRequired();
-
-                    addressBuilder.Property(a => a.LastName)
-                    .HasMaxLength(50)
-                    .IsRequired();
-
-                    addressBuilder.Property(a => a.EmailAddress)
-                    .HasMaxLength(50)
-                    .IsRequired();
-
-                    addressBuilder.Property(a => a.AddressLine)
-                    .HasMaxLength(50)
-                    .IsRequired();
-
-                    addressBuilder.Property(a => a.Country)
-                    .HasMaxLength(50)
-                    .IsRequired();
-
-                    addressBuilder.Property(a => a.State)
-                    .HasMaxLength(50)
-                    .IsRequired();
-
-                    addressBuilder.Property(a => a.ZipCode)
-                    .HasMaxLength(50)
-                    .IsRequired();
-                });
-
-            builder.ComplexProperty(
-                o => o.Payment, paymentBuilder =>
-                {
-                    paymentBuilder.Property(p => p.CardNumber)
-                    .HasMaxLength(50);
-
-                    paymentBuilder.Property(p => p.CardNumber)
-                    .HasMaxLength(24)
-                    .IsRequired();
-
-                    paymentBuilder.Property(p => p.Expiration)
-                    .HasMaxLength(10);
-
-                    paymentBuilder.Property(p => p.CVV)
-                    .HasMaxLength(3);
-
-                    paymentBuilder.Property(p => p.PaymentMethod);
-                });
+            builder.OwnsOne(o => o.Payment, p =>
+            {
+                p.Property(p => p.CardNumber).HasMaxLength(16).IsRequired();
+                p.Property(p => p.Expiration).IsRequired();
+                p.Property(p => p.CVV).HasMaxLength(3).IsRequired();
+                p.Property(p => p.PaymentMethod).IsRequired();  // Assuming PaymentMethod is a string or enum that's correctly defined
+            });
 
             builder.Property(o => o.OrderStatus)
-                .HasDefaultValue(OrderStatus.Draft)
-                .HasConversion(
-                s => s.ToString(),
-                dbStatus => (OrderStatus)Enum.Parse(typeof(OrderStatus), dbStatus));
+                   .HasDefaultValue(OrderStatus.Draft)
+                   .HasConversion(
+                       os => os.ToString(),
+                       os => (OrderStatus)Enum.Parse(typeof(OrderStatus), os));
 
-            builder.Property(o => o.TotalPrice);
+            builder.Property(o => o.TotalPrice).IsRequired();
+
+            builder.HasMany(o => o.OrderItems)
+                   .WithOne()
+                   .HasForeignKey(oi => oi.OrderId);
         }
     }
 }

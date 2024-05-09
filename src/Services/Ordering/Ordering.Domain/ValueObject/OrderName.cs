@@ -11,6 +11,9 @@ namespace Ordering.Domain.ValueObject
         private const int DefaultLength = 5;
         public string Value { get;}
 
+
+
+        private OrderName() { }
         private OrderName(string value)
         {
             Value = value;
