@@ -1,3 +1,4 @@
+using Ordering.Application;
 using Ordering.Infrastructure;
 
 namespace Ordering_Api
@@ -10,7 +11,9 @@ namespace Ordering_Api
 
             // Add services to the container.
 
-            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services
+                .AddInfrastructureServices(builder.Configuration)
+                .AddApplicationServices();
 
             builder.Services.AddControllers();
 
