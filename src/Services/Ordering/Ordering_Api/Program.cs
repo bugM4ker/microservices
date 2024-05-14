@@ -1,3 +1,4 @@
+using Ordering.API;
 using Ordering.Application;
 using Ordering.Infrastructure;
 
@@ -13,13 +14,16 @@ namespace Ordering_Api
 
             builder.Services
                 .AddInfrastructureServices(builder.Configuration)
-                .AddApplicationServices();
+                .AddApplicationServices()
+                .AddApiServices();
 
             builder.Services.AddControllers();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+
+            app.UseApiServices();
 
             app.UseHttpsRedirection();
 
