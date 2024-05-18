@@ -14,7 +14,7 @@ namespace Ordering_Api
 
             builder.Services
                 .AddInfrastructureServices(builder.Configuration)
-                .AddApplicationServices()
+                .AddApplicationServices(builder.Configuration)
                 .AddApiServices();
 
             builder.Services.AddControllers();

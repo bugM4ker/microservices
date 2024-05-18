@@ -4,7 +4,7 @@ using Basket_Api.Repository;
 using Discount_gRPC.Protos;
 using Marten;
 using Microsoft.Extensions.Caching.Distributed;
-
+using BuildingBlocks.Messaging.MassTransit;
 namespace Basket_Api
 {
     public class Program
@@ -38,6 +38,8 @@ namespace Basket_Api
                 options.Configuration = builder.Configuration.GetConnectionString("Redis");
                 options.InstanceName = "BasketCache";
             });
+
+            builder.Services.AddMessageBroker(builder.Configuration);
 
             var app = builder.Build();
 
