@@ -54,7 +54,17 @@ services:
     ports:
       - "1435:1433"
     volumes:
-      - sqlserver_discount:/var/opt/mssql 
+      - sqlserver_discount:/var/opt/mssql
+      
+  ordering-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      MSSQL_SA_PASSWORD: "Sqlserver124@"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1436:1433"
+    volumes:
+      - sqlserver_ordering:/var/opt/mssql  
 
 
   basket-api:

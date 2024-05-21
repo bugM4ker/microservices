@@ -9,6 +9,9 @@ services:
     image: redis
   discount-db:
     image: mcr.microsoft.com/mssql/server:2022-latest
+  ordering-db:
+   image: mcr.microsoft.com/mssql/server:2022-latest
+ 
   catalog-api:
     image: ${DOCKER_REGISTRY-}catalogapi
     build:
@@ -31,6 +34,7 @@ volumes:
   postgres_catalog:
   postgres_basket:
   sqlserver_discount:
+  sqlserver_ordering:
 
 
 
